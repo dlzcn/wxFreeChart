@@ -70,7 +70,7 @@ void LineMarker::Draw(wxDC &dc, wxRect rcData, Axis *horizAxis, Axis *vertAxis)
     wxCoord x1, y1;
 
     if (m_horizontal) {
-        if (!horizAxis->IsVisible(m_value)) {
+        if (!vertAxis->IsVisible(m_value)) {
             return ;
         }
 
@@ -79,7 +79,7 @@ void LineMarker::Draw(wxDC &dc, wxRect rcData, Axis *horizAxis, Axis *vertAxis)
         y0 = y1 = vertAxis->ToGraphics(dc, rcData.y, rcData.height, m_value);
     }
     else {
-        if (!vertAxis->IsVisible(m_value)) {
+        if (!horizAxis->IsVisible(m_value)) {
             return ;
         }
 
