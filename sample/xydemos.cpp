@@ -27,6 +27,9 @@
 
 #include <math.h>
 
+// for dynamic demo5new
+#include "xyfastdataset.h"
+#include "marker.hpp"
 
 class XYDemo1 : public ChartDemo
 {
@@ -270,7 +273,7 @@ public:
 /**
  * Class, that updates dataset on timer.
  */
-#define DYNAMIC_DATA_POINTS 86400
+#define DYNAMIC_DATA_POINTS 512
 #define DYNAMIC_UPDATE_25FPS 40
 #define DYNAMIC_UPDATE_30FPS 30
  
@@ -406,6 +409,152 @@ public:
 
 private:
     DynamicUpdater* m_pUpdater;
+
+};
+
+class DynamicUpdaterNew : public wxEvtHandler
+{
+public:
+    DynamicUpdaterNew(XYFastDataset* dataset, NumberAxis* axis) :
+        m_dataset(dataset),
+        m_axis(axis)
+    {
+        // Create a timer and bind to OnTimer event handler.
+        m_timer.SetOwner(this);
+        Bind(wxEVT_TIMER, &DynamicUpdaterNew::OnTimer, this);
+
+        // Start timer with target 25fps update rate.
+        m_timer.Start(DYNAMIC_UPDATE_25FPS);
+    }
+
+    ~DynamicUpdaterNew()
+    {
+        Unbind(wxEVT_TIMER, &DynamicUpdaterNew::OnTimer, this);
+        m_timer.Stop();
+    }
+
+private:
+    XYFastDataset *m_dataset;
+    NumberAxis* m_axis;
+    wxTimer m_timer;
+
+    void OnTimer(wxTimerEvent &ev)
+    {
+        double first_x = m_dataset->GetSerie(0)->GetX(0);
+
+        //// Ripple the values down the vector.
+        //for (size_t i = 0; i < DYNAMIC_DATA_POINTS - 1; i++)
+        //    m_dataset->GetSerie(0)->UpdatePoint(i, wxRealPoint(first_x + i + 1, m_dataset->GetSerie(0)->GetY(i + 1)));
+
+        // Generate a new random value for the end point.
+        //m_dataset->GetSerie(0)->UpdatePoint(DYNAMIC_DATA_POINTS - 1, 
+        //                                    wxPoint(first_x + DYNAMIC_DATA_POINTS + 1, (100.0 * rand() / (double) RAND_MAX)));
+        m_dataset->GetSerie(0)->UpdateX(first_x + DYNAMIC_DATA_POINTS + 1);
+        m_dataset->GetSerie(0)->UpdateY((100.0 * rand() / (double)RAND_MAX));
+
+        // Shift the axis left also.
+        m_axis->SetFixedBounds(first_x + 1, first_x + DYNAMIC_DATA_POINTS);
+
+        if (first_x > 100 && first_x < 150)
+            m_dataset->GetSerie(0)->SetVisible(false);
+        else
+            m_dataset->GetSerie(0)->SetVisible();
+
+        if (first_x > 150 && first_x < 200)
+            dynamic_cast<InteractiveRangeMarker *>(m_dataset->GetMarker(0))->SetVisible(false);
+        else
+            dynamic_cast<InteractiveRangeMarker *>(m_dataset->GetMarker(0))->SetVisible(true);
+        // Notify the chart of new data.
+        m_dataset->DatasetChanged();
+    }
+};
+
+/**
+* Dynamic chart demo.
+*/
+class XYDemo5New : public ChartDemo
+{
+public:
+    XYDemo5New()
+        : ChartDemo(wxT("XY Demo 5 - Dynamic Data (new)"))
+    {
+    }
+
+    virtual Chart *Create()
+    {
+        // XY data for series.
+        wxVector<wxRealPoint> data;
+
+        for (size_t i = 0; i < DYNAMIC_DATA_POINTS; i++)
+            data.push_back(wxRealPoint(i, 50));
+
+        // First step: create plot.
+        XYPlot *plot = new XYPlot();
+
+        // Second step: create dataset
+        XYFastDataset *dataset = new XYFastDataset();
+
+        // and add serie to it
+        dataset->AddSerie(new XYFastSerie(data));
+
+
+        // set line renderer to it
+        dataset->SetRenderer(new XYLineRenderer());
+
+        // add our dataset to plot
+        plot->AddDataset(dataset);
+
+        // create first range marker
+        RangeMarker *rangeMarker1 = new InteractiveRangeMarker(new FillAreaDraw(wxColour(80, 80, 255), wxColour(200, 200, 250)));
+
+        // set value to be marked, in our case vertical range [15; 20]
+        rangeMarker1->SetHorizontalRange(15, 20);
+
+        // and add marker to dataset
+        dataset->AddMarker(rangeMarker1);
+
+        // create left and bottom number axes
+        NumberAxis *leftAxis = new NumberAxis(AXIS_LEFT);
+        leftAxis->SetFixedBounds(0.0, 100.0);
+
+        NumberAxis *bottomAxis = new NumberAxis(AXIS_BOTTOM);
+        bottomAxis->SetFixedBounds(0.0, DYNAMIC_DATA_POINTS - 1);
+
+        m_pUpdater = new DynamicUpdaterNew(dataset, bottomAxis);
+
+        // leftAxis->SetLabelCount(101);
+        // leftAxis->SetLabelSkip(9);
+        // bottomAxis->SetFixedBounds(0.0, 300.0);
+        // bottomAxis->SetLabelCount(101);
+        // bottomAxis->SetLabelSkip(9);
+
+        // we setup window
+        //bottomAxis->SetWindow(0, 10);
+        //bottomAxis->SetUseWindow(true);
+
+        // add axes to plot
+        plot->AddAxis(leftAxis);
+        plot->AddAxis(bottomAxis);
+
+        // link axes and dataset
+        plot->LinkDataVerticalAxis(0, 0);
+        plot->LinkDataHorizontalAxis(0, 0);
+
+        // and finally create chart
+        Chart *chart = new Chart(plot, GetName());
+
+        // set axis as scrolled, so chart panel can scroll its window.
+        //chart->SetScrolledAxis(bottomAxis);
+        return chart;
+    }
+
+    virtual void CleanUp()// wxOVERRIDE
+    {
+        delete m_pUpdater;
+    }
+
+private:
+    DynamicUpdaterNew* m_pUpdater;
 
 };
 
@@ -951,6 +1100,7 @@ ChartDemo *xyDemos[] = {
     new XYDemo3(),
     new XYDemo4(),
     new XYDemo5(),
+    new XYDemo5New(),
     new XYDemo6(),
     new XYDemo7(),
 //    new XYDemo8(), deleted because it was a duplicate.
