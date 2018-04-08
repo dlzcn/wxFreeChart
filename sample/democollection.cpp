@@ -19,6 +19,9 @@ extern int barDemosCount;
 extern ChartDemo *xyDemos[];
 extern int xyDemosCount;
 
+extern ChartDemo *xyDemos2[];
+extern int xyDemos2Count;
+
 extern ChartDemo *ganttDemos[];
 extern int ganttDemosCount;
 
@@ -90,6 +93,7 @@ static Category *cats[] = {
     new Category(wxT("OHLC Charts"), ohlcDemos, ohlcDemosCount),
     new Category(wxT("Bar Charts"), barDemos, barDemosCount),
     new Category(wxT("XY Charts"), xyDemos, xyDemosCount),
+    new Category(wxT("XY Charts (new)"), xyDemos2, xyDemos2Count),
     new Category(wxT("Gantt Charts"), ganttDemos, ganttDemosCount),
     new Category(wxT("Bubble Charts"), bubbleDemos, bubbleDemosCount),
     new Category(wxT("Combined axis"), combinedAxisDemos, combinedAxisDemosCount),

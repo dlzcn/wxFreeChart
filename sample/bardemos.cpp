@@ -525,7 +525,7 @@ public:
         plot->SetDrawGrid(true, false);
         
         plot->SetBackground(new FillAreaDraw(*wxGREEN_PEN, *wxBLUE_BRUSH));
-        plot->SetDataBackground(new FillAreaDraw(*wxTRANSPARENT_PEN, *wxTRANSPARENT_BRUSH));
+       // plot->SetDataBackground(new FillAreaDraw(*wxTRANSPARENT_PEN, *wxTRANSPARENT_BRUSH));
 
         // and finally construct and return chart
         return new Chart(plot, wxT("USA Export Goods / Services"));;

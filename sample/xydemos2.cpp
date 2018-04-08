@@ -27,6 +27,8 @@
 
 #include <math.h>
 
+#include "xyfastdataset.h"
+
 
 class XYDemo1 : public ChartDemo
 {
@@ -270,33 +272,33 @@ public:
 /**
  * Class, that updates dataset on timer.
  */
-#define DYNAMIC_DATA_POINTS 86400
+#define DYNAMIC_DATA_POINTS 512
 #define DYNAMIC_UPDATE_25FPS 40
 #define DYNAMIC_UPDATE_30FPS 30
  
-class DynamicUpdater : public wxEvtHandler
+class DynamicUpdater2 : public wxEvtHandler
 {
 public:
-    DynamicUpdater(XYSimpleDataset* dataset, NumberAxis* axis) :
+    DynamicUpdater2(XYFastDataset* dataset, NumberAxis* axis) :
     m_dataset(dataset),
     m_axis(axis)
     {
         // Create a timer and bind to OnTimer event handler.
         m_timer.SetOwner(this);
-        Bind(wxEVT_TIMER, &DynamicUpdater::OnTimer, this);
+        Bind(wxEVT_TIMER, &DynamicUpdater2::OnTimer, this);
         
         // Start timer with target 25fps update rate.
         m_timer.Start(DYNAMIC_UPDATE_25FPS);        
     }
     
-    ~DynamicUpdater()
+    ~DynamicUpdater2()
     {
-        Unbind(wxEVT_TIMER, &DynamicUpdater::OnTimer, this);
+        Unbind(wxEVT_TIMER, &DynamicUpdater2::OnTimer, this);
         m_timer.Stop();
     }
 
 private:
-    XYSimpleDataset *m_dataset;
+    XYFastDataset *m_dataset;
     NumberAxis* m_axis;
     wxTimer m_timer;
     
@@ -304,18 +306,24 @@ private:
     {
         double first_x = m_dataset->GetSerie(0)->GetX(0);
         
-        // Ripple the values down the vector.
-        for (size_t i = 0; i < DYNAMIC_DATA_POINTS - 1; i++)
-            m_dataset->GetSerie(0)->UpdatePoint(i, wxRealPoint(first_x + i + 1, m_dataset->GetSerie(0)->GetY(i + 1)));
+        //// Ripple the values down the vector.
+        //for (size_t i = 0; i < DYNAMIC_DATA_POINTS - 1; i++)
+        //    m_dataset->GetSerie(0)->UpdatePoint(i, wxRealPoint(first_x + i + 1, m_dataset->GetSerie(0)->GetY(i + 1)));
 
         // Generate a new random value for the end point.
-        m_dataset->GetSerie(0)->UpdatePoint(DYNAMIC_DATA_POINTS - 1, 
-                                            wxPoint(first_x + DYNAMIC_DATA_POINTS + 1, (100.0 * rand() / (double) RAND_MAX)));
+        //m_dataset->GetSerie(0)->UpdatePoint(DYNAMIC_DATA_POINTS - 1, 
+        //                                    wxPoint(first_x + DYNAMIC_DATA_POINTS + 1, (100.0 * rand() / (double) RAND_MAX)));
+        m_dataset->GetSerie(0)->UpdateX(first_x + DYNAMIC_DATA_POINTS + 1);
+        m_dataset->GetSerie(0)->UpdateY((100.0 * rand() / (double)RAND_MAX));
                                             
         // Shift the axis left also.
         m_axis->SetFixedBounds(first_x + 1, first_x + DYNAMIC_DATA_POINTS);
         
-        // Notify the chart of new data.
+        if (first_x > 100 && first_x < 150)
+            m_dataset->GetSerie(0)->SetVisible(false);
+        else
+            m_dataset->GetSerie(0)->SetVisible();
+            // Notify the chart of new data.
         m_dataset->DatasetChanged();
     }
 };
@@ -323,11 +331,11 @@ private:
 /**
  * Dynamic chart demo.
  */
-class XYDemo5 : public ChartDemo
+class XYDemo25 : public ChartDemo
 {
 public:
-    XYDemo5()
-    : ChartDemo(wxT("XY Demo 5 - Dynamic Data"))
+    XYDemo25()
+    : ChartDemo(wxT("XY Demo25 - Dynamic Data"))
     {
     }
 
@@ -343,10 +351,10 @@ public:
         XYPlot *plot = new XYPlot();
 
         // Second step: create dataset
-        XYSimpleDataset *dataset = new XYSimpleDataset();
+        XYFastDataset *dataset = new XYFastDataset();
 
         // and add serie to it
-        dataset->AddSerie(new XYSerie(data));
+        dataset->AddSerie(new XYFastSerie(data));
 
         
         // set line renderer to it
@@ -371,7 +379,7 @@ public:
         NumberAxis *bottomAxis = new NumberAxis(AXIS_BOTTOM);
         bottomAxis->SetFixedBounds(0.0, DYNAMIC_DATA_POINTS - 1);
         
-        m_pUpdater = new DynamicUpdater(dataset, bottomAxis);
+        m_pUpdater = new DynamicUpdater2(dataset, bottomAxis);
 
         // leftAxis->SetLabelCount(101);
         // leftAxis->SetLabelSkip(9);
@@ -405,7 +413,7 @@ public:
     }
 
 private:
-    DynamicUpdater* m_pUpdater;
+    DynamicUpdater2* m_pUpdater;
 
 };
 
@@ -945,19 +953,7 @@ public:
 };
 
 
-ChartDemo *xyDemos[] = {
-    new XYDemo1(),
-    new XYDemo2(),
-    new XYDemo3(),
-    new XYDemo4(),
-    new XYDemo5(),
-    new XYDemo6(),
-    new XYDemo7(),
-//    new XYDemo8(), deleted because it was a duplicate.
-    new XYDemo9(),
-    new XYDemo10(),
-    new XYDemo11(),
-    new XYDemo12(),
-    new XYDemo13(),
+ChartDemo *xyDemos2[] = {
+    new XYDemo25(),
 };
-int xyDemosCount = WXSIZEOF(xyDemos);
+int xyDemos2Count = WXSIZEOF(xyDemos2);

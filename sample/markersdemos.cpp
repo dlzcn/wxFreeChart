@@ -29,13 +29,12 @@ public:
     virtual Chart *Create()
     {
         // serie xy data
-        double data[][2] = {
-                { 10, 20, },
-                { 13, 16, },
-                { 7, 30, },
-                { 15, 34, },
-                { 25, 4, },
-        };
+        wxVector<wxRealPoint> data;
+        data.push_back(wxRealPoint(10, 20));
+        data.push_back(wxRealPoint(13, 16));
+        data.push_back(wxRealPoint(14, 30));
+        data.push_back(wxRealPoint(15, 34));
+        data.push_back(wxRealPoint(25, 4));
 
         // first step: create plot
         XYPlot *plot = new XYPlot();
@@ -44,7 +43,7 @@ public:
         XYSimpleDataset *dataset = new XYSimpleDataset();
 
         // and add serie to it
-        dataset->AddSerie((double *) data, WXSIZEOF(data));
+        dataset->AddSerie(new XYSerie(data));
 
         // set line renderer to dataset
         dataset->SetRenderer(new XYLineRenderer());
@@ -82,13 +81,12 @@ public:
     virtual Chart *Create()
     {
         // serie xy data
-        double data[][2] = {
-                { 10, 20, },
-                { 13, 16, },
-                { 14, 30, },
-                { 15, 34, },
-                { 25, 4, },
-        };
+        wxVector<wxRealPoint> data;
+        data.push_back(wxRealPoint(10, 20));
+        data.push_back(wxRealPoint(13, 16));
+        data.push_back(wxRealPoint(14, 30));
+        data.push_back(wxRealPoint(15, 34));
+        data.push_back(wxRealPoint(25, 4));
 
         // first step: create plot
         XYPlot *plot = new XYPlot();
@@ -97,7 +95,7 @@ public:
         XYSimpleDataset *dataset = new XYSimpleDataset();
 
         // and add serie to it
-        dataset->AddSerie((double *) data, WXSIZEOF(data));
+        dataset->AddSerie(new XYSerie(data));
 
         // set line renderer to dataset
         dataset->SetRenderer(new XYLineRenderer());

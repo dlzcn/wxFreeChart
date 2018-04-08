@@ -31,21 +31,20 @@ public:
     virtual Chart *Create()
     {
         // first plot data
-        double data1[][2] = {
-                { 10, 20, },
-                { 13, 16, },
-                { 7, 30, },
-                { 15, 34, },
-                { 25, 4, },
-        };
+        wxVector<wxRealPoint> data1;
+        data1.push_back(wxRealPoint(10, 20));
+        data1.push_back(wxRealPoint(13, 16));
+        data1.push_back(wxRealPoint(7, 30));
+        data1.push_back(wxRealPoint(15, 34));
+        data1.push_back(wxRealPoint(25, 4));
+
         // second plot data
-        double data2[][2] = {
-                { 45, 40, },
-                { 23, 16, },
-                { 43, 60, },
-                { 25, 7, },
-                { 66, 4, },
-        };
+        wxVector<wxRealPoint> data2;
+        data2.push_back(wxRealPoint(45, 40));
+        data2.push_back(wxRealPoint(23, 16));
+        data2.push_back(wxRealPoint(43, 60));
+        data2.push_back(wxRealPoint(25, 7));
+        data2.push_back(wxRealPoint(66, 4));
 
         MultiPlot *multiPlot = new MultiPlot(1, 0, 5, 5);
 
@@ -59,7 +58,7 @@ public:
         XYSimpleDataset *dataset1 = new XYSimpleDataset();
 
         // and add serie to it
-        dataset1->AddSerie((double *) data1, WXSIZEOF(data1));
+        dataset1->AddSerie(new XYSerie(data1));
 
         // set line renderer to dataset
         dataset1->SetRenderer(new XYLineRenderer());
@@ -94,7 +93,7 @@ public:
         XYSimpleDataset *dataset2 = new XYSimpleDataset();
 
         // and add serie to it
-        dataset2->AddSerie((double *) data2, WXSIZEOF(data2));
+        dataset2->AddSerie(new XYSerie(data2));
 
         // set line renderer to dataset
         dataset2->SetRenderer(new XYLineRenderer());
@@ -141,22 +140,20 @@ public:
     virtual Chart *Create()
     {
         // first plot data
-        double data1[][2] = {
-                { 10, 20, },
-                { 43, 16, },
-                { 17, 30, },
-                { 65, 34, },
-                { 25, 4, },
-        };
+        wxVector<wxRealPoint> data1;
+        data1.push_back(wxRealPoint(10, 20));
+        data1.push_back(wxRealPoint(13, 16));
+        data1.push_back(wxRealPoint(7, 30));
+        data1.push_back(wxRealPoint(15, 34));
+        data1.push_back(wxRealPoint(25, 4));
+
         // second plot data
-        double data2[][2] = {
-                { 45, 40, },
-                { 23, 16, },
-                { 35, 60, },
-                { 15, 7, },
-                { 5, 20 },
-                { 66, 4, },
-        };
+        wxVector<wxRealPoint> data2;
+        data2.push_back(wxRealPoint(45, 40));
+        data2.push_back(wxRealPoint(23, 16));
+        data2.push_back(wxRealPoint(43, 60));
+        data2.push_back(wxRealPoint(25, 7));
+        data2.push_back(wxRealPoint(66, 4));
 
         MultiPlot *multiPlot = new MultiPlot(0, 1, 5, 5);
 
@@ -170,7 +167,7 @@ public:
         XYSimpleDataset *dataset1 = new XYSimpleDataset();
 
         // and add serie to it
-        dataset1->AddSerie((double *) data1, WXSIZEOF(data1));
+        dataset1->AddSerie(new XYSerie(data1));
 
         // set line renderer to dataset
         dataset1->SetRenderer(new XYLineRenderer());
@@ -202,7 +199,7 @@ public:
         XYSimpleDataset *dataset2 = new XYSimpleDataset();
 
         // and add serie to it
-        dataset2->AddSerie((double *) data2, WXSIZEOF(data2));
+        dataset2->AddSerie(new XYSerie(data2));
 
         // set histogram renderer to dataset
         XYHistoRenderer *renderer2 = new XYHistoRenderer();
