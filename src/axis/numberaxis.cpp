@@ -101,6 +101,14 @@ bool NumberAxis::UpdateBounds()
 
     for (size_t n = 0; n < m_datasets.Count(); n++) 
     {
+        size_t count = 0;
+        for (size_t serie = 0;
+            serie < m_datasets[n]->GetSerieCount(); serie++) {
+            count += m_datasets[n]->GetCount(serie);
+        }
+        if (count == 0)
+            continue;
+
         bool verticalAxis = IsVertical();
 
         double minValue = m_datasets[n]->GetMinValue(verticalAxis);
