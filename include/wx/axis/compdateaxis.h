@@ -36,7 +36,7 @@ public:
 
     virtual wxCoord GetExtent(wxDC &dc);
 
-    virtual bool UpdateBounds() wxOVERRIDE;
+    virtual bool UpdateBounds() ;
 
     virtual void GetDataBounds(double &minValue, double &maxValue) const;
 

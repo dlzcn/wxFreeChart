@@ -331,7 +331,7 @@ private:
      * @param cdc Chart device context
      * @param rcData data area rectangle
      */
-    virtual void DrawBackground(ChartDC& cdc, wxRect rcData) wxOVERRIDE;
+    virtual void DrawBackground(ChartDC& cdc, wxRect rcData) ;
 
     /**
      * Draws legend.

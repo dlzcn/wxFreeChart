@@ -117,9 +117,9 @@ public:
 
     XYSerie* GetSerie(size_t series);
 
-    virtual double GetX(size_t index, size_t serie) wxOVERRIDE;
+    virtual double GetX(size_t index, size_t serie) ;
 
-    virtual double GetY(size_t index, size_t serie) wxOVERRIDE;
+    virtual double GetY(size_t index, size_t serie) ;
 
     virtual size_t GetSerieCount();
 

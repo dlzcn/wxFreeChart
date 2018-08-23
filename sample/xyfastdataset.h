@@ -100,14 +100,16 @@ public:
 
     XYFastSerie* GetSerie(size_t series);
 
-    virtual double GetX(size_t index, size_t serie);// wxOVERRIDE;
+    virtual double GetX(size_t index, size_t serie);// ;
 
-    virtual double GetY(size_t index, size_t serie);// wxOVERRIDE;
+    virtual double GetY(size_t index, size_t serie);// ;
 
     virtual size_t GetSerieCount();
 
-    virtual size_t GetCount(size_t serie);
-    virtual wxString GetSerieName(size_t serie);
+    virtual size_t GetCount(size_t serie);
+
+    virtual wxString GetSerieName(size_t serie);
+
     void SetSerieName(size_t serie, const wxString &name);
 
 private:

@@ -402,7 +402,7 @@ public:
         return chart;
     }
     
-    virtual void CleanUp()// wxOVERRIDE
+    virtual void CleanUp()// 
     {
         delete m_pUpdater;
     }
@@ -548,7 +548,7 @@ public:
         return chart;
     }
 
-    virtual void CleanUp()// wxOVERRIDE
+    virtual void CleanUp()// 
     {
         delete m_pUpdater;
     }

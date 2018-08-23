@@ -407,7 +407,8 @@ public:
 
     virtual double ToData(wxDC &dc, int minCoord, int gRange, wxCoord g);
 
-    virtual bool UpdateBounds() wxOVERRIDE;
+    //virtual bool UpdateBounds() ;
+    virtual bool UpdateBounds();
 
     virtual void Draw(wxDC &dc, wxRect rc);
 

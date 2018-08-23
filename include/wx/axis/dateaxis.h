@@ -25,7 +25,7 @@ public:
     DateAxis(AXIS_LOCATION location);
     virtual ~DateAxis();
 
-    virtual bool UpdateBounds() wxOVERRIDE;
+    virtual bool UpdateBounds() ;
 
     /**
      * Sets date format for date labels.

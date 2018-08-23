@@ -22,7 +22,7 @@ public:
     LogarithmicNumberAxis(AXIS_LOCATION location);
     virtual ~LogarithmicNumberAxis();
 
-  virtual bool UpdateBounds() wxOVERRIDE;
+  virtual bool UpdateBounds() ;
   virtual double BoundValue(double value);
   virtual bool IsVisible(double value);
 
