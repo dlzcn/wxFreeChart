@@ -92,7 +92,7 @@ wxChartPanel::wxChartPanel(wxWindow *parent, wxWindowID id, Chart *chart, const 
 
     m_chart = NULL;
     m_antialias = false;
-    m_rerender = true;
+    m_rerender = false;
     m_mode = NULL;
 
     ResizeBackBitmap(size);
@@ -122,7 +122,8 @@ void wxChartPanel::SetChart(Chart *chart)
 
     RecalcScrollbars();
 
-    RedrawBackBitmap();
+    //RedrawBackBitmap();
+    m_rerender = true;
     Refresh(false);
 }
 
@@ -153,7 +154,8 @@ void wxChartPanel::SetAntialias(bool antialias)
 #endif
         m_antialias = antialias;
 
-        RedrawBackBitmap();
+        //RedrawBackBitmap();
+        m_rerender = true;
         Refresh(false);
     }
 }
@@ -235,7 +237,8 @@ void wxChartPanel::OnSize(wxSizeEvent &ev)
     const wxSize size = ev.GetSize();
     ResizeBackBitmap(size);
 
-    RedrawBackBitmap();
+    //RedrawBackBitmap();
+    m_rerender = true;
     Refresh();
 }
 
