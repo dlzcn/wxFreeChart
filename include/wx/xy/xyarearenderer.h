@@ -23,9 +23,13 @@ public:
 
     virtual void Draw(wxDC &dc, wxRect rcData, wxCoord x0, wxCoord y0, wxCoord x1, wxCoord y1);
 
+    void SetFillToZero(bool val) { m_fillZero = val; }
+    bool GetFillToZero() const { return m_fillZero; }
+
 private:
     wxPen m_outlinePen;
     wxBrush m_areaBrush;
+    bool m_fillZero;
 };
 
 #endif /*XYAREARENDERER_H_*/
