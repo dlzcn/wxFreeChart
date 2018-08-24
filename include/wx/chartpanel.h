@@ -126,6 +126,8 @@ private:
 
     bool m_antialias;
 
+    bool m_rerender;
+
     ChartPanelMode *m_mode;
 
     DECLARE_EVENT_TABLE()

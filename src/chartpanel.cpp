@@ -92,7 +92,7 @@ wxChartPanel::wxChartPanel(wxWindow *parent, wxWindowID id, Chart *chart, const 
 
     m_chart = NULL;
     m_antialias = false;
-
+    m_rerender = true;
     m_mode = NULL;
 
     ResizeBackBitmap(size);
@@ -170,7 +170,8 @@ wxBitmap wxChartPanel::CopyBackbuffer()
 
 void wxChartPanel::ChartChanged(Chart *WXUNUSED(chart))
 {
-    RedrawBackBitmap();
+    //RedrawBackBitmap();
+    m_rerender = true;
     Refresh(false);
 }
 
@@ -178,7 +179,8 @@ void wxChartPanel::ChartScrollsChanged(Chart *WXUNUSED(chart))
 {
     RecalcScrollbars();
 
-    RedrawBackBitmap();
+    //RedrawBackBitmap();
+    m_rerender = true;
     Refresh(false);
 }
 
@@ -215,6 +217,10 @@ void wxChartPanel::OnPaint(wxPaintEvent &WXUNUSED(ev))
 
 
     if (m_chart != NULL) {
+        if (m_rerender) {
+            RedrawBackBitmap();
+            m_rerender = false;
+        }
         dc.DrawBitmap(m_backBitmap, 0, 0, false);
     }
     else {
